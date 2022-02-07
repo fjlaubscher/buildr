@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - feature/*
+      - fix/*
+      - release/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - run: npm i -g yarn
+      - run: yarn
+      - run: yarn run lint
+      - run: yarn workspace buildr-api run build
+      - run: yarn workspace buildr-web run build
