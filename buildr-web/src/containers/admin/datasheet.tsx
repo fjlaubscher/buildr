@@ -135,14 +135,11 @@ const DataSheetAdmin = () => {
             />
           </FormProvider>
         </GridItem>
-        <GridItem>
-          <Box
-            mt={!isSmallDesktop ? '2rem !important' : undefined}
-            width="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
+        <GridItem
+          ml={isSmallDesktop ? 8 : undefined}
+          mt={isSmallDesktop ? undefined : '2rem !important'}
+        >
+          <Box width="100%" display="flex" alignItems="center" justifyContent="space-between">
             <Heading mb={4} size="lg">
               Upgrades
             </Heading>
