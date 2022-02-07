@@ -107,6 +107,7 @@ const SubFactionAdmin = () => {
                 const created = await createDataSheetAsync({ ...values, subFactionId });
 
                 if (created) {
+                  form.reset(DEFAULT_VALUES);
                   fetchDatasheets();
                   onClose();
 

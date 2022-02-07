@@ -211,6 +211,7 @@ const DataSheetAdmin = () => {
                   });
 
                   if (created) {
+                    upgradeForm.reset(DEFAULT_VALUES);
                     fetchUpgrades();
                     onClose();
 
