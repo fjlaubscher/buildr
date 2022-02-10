@@ -1,3 +1,8 @@
+interface SelectOption {
+  id: number;
+  description: string;
+}
+
 declare namespace buildr {
   interface APIResponse {
     status: "ok" | "error";
@@ -41,4 +46,27 @@ declare namespace buildr {
     username: string;
     password: string;
   }
+  
+  interface List {
+    units: buildr.List.Unit[];
+    factionId: number;
+    subFactionId: number;
+    points: number;
+  }
+
+  interface SubFactionDictionary {
+    [factionId: number]: buildr.SubFaction[];
+  }
+}
+
+declare namespace buildr.List {
+  
+  interface Unit {
+    key: string;
+    datasheet: buildr.DataSheet;
+    upgrades: buildr.DataSheetUpgrade[];
+    models: number;
+    points: number;
+  }
+  
 }

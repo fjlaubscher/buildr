@@ -18,8 +18,21 @@ export const getDataSheetsBySubFactionIdAsync = async (subFactionId: number) => 
   await client.connect();
 
   const { rows } = await client.query<TableRow>(
-    'SELECT * from datasheet where sub_faction_id = $1',
+    'SELECT * from datasheet where sub_faction_id = $1 order by description asc ',
     [subFactionId]
+  );
+  await client.end();
+
+  return mapFromPSQL<buildr.DataSheet>(rows);
+};
+
+export const getDataSheetsBySubFactionIdAndBattlefieldRoleIdAsync = async (subFactionId: number, battlefieldRoleId: number) => {
+  const client = new Client();
+  await client.connect();
+
+  const { rows } = await client.query<TableRow>(
+    'SELECT * from datasheet where sub_faction_id = $1 and battlefield_role_id = $2 order by description asc ',
+    [subFactionId, battlefieldRoleId]
   );
   await client.end();
 

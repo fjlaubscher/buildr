@@ -1,6 +1,10 @@
 import { Router } from 'express';
 
-import { createDataSheetAsync, getDataSheetsBySubFactionIdAsync } from '../db/datasheet';
+import {
+  createDataSheetAsync,
+  getDataSheetsBySubFactionIdAndBattlefieldRoleIdAsync,
+  getDataSheetsBySubFactionIdAsync
+} from '../db/datasheet';
 import { getSubFactionsAsync, getSubFactionByIdAsync } from '../db/sub-faction';
 
 // helpers
@@ -31,6 +35,17 @@ router.get('/:id/datasheets', async (req, res) => {
   try {
     const factionId = parseInt(req.params.id);
     const dataSheets = await getDataSheetsBySubFactionIdAsync(factionId);
+    return res.status(200).json({ status: 'ok', data: dataSheets });
+  } catch (ex: any) {
+    return res.status(500).json({ status: 'error', data: ex.message });
+  }
+});
+
+router.get('/:id/datasheets/by-battlefield-role/:battlefieldRoleId', async (req, res) => {
+  try {
+    const factionId = parseInt(req.params.id);
+    const battlefieldRoleId = parseInt(req.params.battlefieldRoleId);
+    const dataSheets = await getDataSheetsBySubFactionIdAndBattlefieldRoleIdAsync(factionId, battlefieldRoleId);
     return res.status(200).json({ status: 'ok', data: dataSheets });
   } catch (ex: any) {
     return res.status(500).json({ status: 'error', data: ex.message });

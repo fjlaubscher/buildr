@@ -14,7 +14,7 @@ import { MdAdd, MdRemove } from 'react-icons/md';
 interface Props {
   label: string;
   isRequired?: boolean;
-  onChange: (value: any) => void;
+  onChange: (value: number) => void;
   minimum: number;
   maximum: number;
   value: number;

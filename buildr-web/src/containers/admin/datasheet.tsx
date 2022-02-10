@@ -191,6 +191,7 @@ const DataSheetAdmin = () => {
                   const updated = await updateDataSheetUpgradeAsync(values);
 
                   if (updated) {
+                    upgradeForm.reset(DEFAULT_VALUES);
                     fetchUpgrades();
                     onClose();
 

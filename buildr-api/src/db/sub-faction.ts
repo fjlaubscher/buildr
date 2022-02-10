@@ -5,7 +5,7 @@ export const getSubFactionsAsync = async () => {
   const client = new Client();
   await client.connect();
 
-  const { rows } = await client.query<TableRow>('SELECT * from sub_faction');
+  const { rows } = await client.query<TableRow>('SELECT * from sub_faction order by description asc');
   await client.end();
 
   return mapFromPSQL<buildr.SubFaction>(rows);
@@ -25,7 +25,7 @@ export const getSubFactionsByFactionIdAsync = async (factionId: number) => {
   const client = new Client();
   await client.connect();
 
-  const { rows } = await client.query<TableRow>('SELECT * from sub_faction WHERE faction_id = $1', [
+  const { rows } = await client.query<TableRow>('SELECT * from sub_faction WHERE faction_id = $1 order by description asc', [
     factionId
   ]);
   await client.end();

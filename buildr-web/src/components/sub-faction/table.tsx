@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Table,
-  Tbody,
-  Tr,
-  Td,
-  IconButton,
-  useMediaQuery
-} from '@chakra-ui/react';
+import { Button, Table, Tbody, Tr, Td, IconButton, useMediaQuery } from '@chakra-ui/react';
 import { MdEdit } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
@@ -23,7 +15,9 @@ const SubFactionTable = ({ subFactions }: Props) => {
       <Tbody>
         {subFactions.map((s) => (
           <Tr key={`sub-faction-${s.id}`}>
-            <Td width="85%" pl={0}>{s.description}</Td>
+            <Td width="85%" pl={0}>
+              {s.description}
+            </Td>
             <Td width="15%" pr={0}>
               {isSmallDesktop ? (
                 <Button

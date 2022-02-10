@@ -46,7 +46,11 @@ const DataSheetUpgradeTable = ({ upgrades, onDeleteClick, onEditClick }: Props) 
                   <IconButton aria-label="edit" onClick={() => onEditClick(u)} icon={<MdEdit />} />
                 )}
                 {isSmallDesktop ? (
-                  <Button colorScheme="red" onClick={() => onDeleteClick(u.id)} leftIcon={<MdDelete />}>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => onDeleteClick(u.id)}
+                    leftIcon={<MdDelete />}
+                  >
                     Delete
                   </Button>
                 ) : (

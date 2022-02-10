@@ -18,7 +18,7 @@ export const getUpgradesByDataSheetIdAsync = async (dataSheetId: number) => {
   await client.connect();
 
   const { rows } = await client.query<TableRow>(
-    'SELECT * from datasheet_upgrade where datasheet_id = $1',
+    'SELECT * from datasheet_upgrade where datasheet_id = $1 order by description asc',
     [dataSheetId]
   );
   await client.end();

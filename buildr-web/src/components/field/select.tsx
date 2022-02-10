@@ -1,36 +1,38 @@
 import React from 'react';
-import { FormControl, FormLabel, Select } from '@chakra-ui/react';
-
-interface SelectOption {
-  id: number;
-  description: string;
-}
+import { Center, CircularProgress, FormControl, FormLabel, Select } from '@chakra-ui/react';
 
 interface Props {
   label: string;
   options: SelectOption[];
   isRequired?: boolean;
-  onChange: (value: string) => void;
+  isLoading?: boolean;
+  onChange: (value: number) => void;
   value: number;
   mb?: string;
 }
 
-const SelectField = ({ label, value, options, isRequired, onChange, mb }: Props) => (
+const SelectField = ({ label, value, options, isRequired, isLoading, onChange, mb }: Props) => (
   <FormControl mb={mb || '2'} isRequired={isRequired || false}>
     <FormLabel>{label}</FormLabel>
-    <Select
-      placeholder="Select an option"
-      value={value}
-      onChange={(e) => {
-        onChange(e.currentTarget.value);
-      }}
-    >
-      {options.map((o, i) => (
-        <option key={`option-${i}`} value={o.id}>
-          {o.description}
-        </option>
-      ))}
-    </Select>
+    {isLoading ? (
+      <Center width="100%">
+        <CircularProgress isIndeterminate />
+      </Center>
+    ) : (
+      <Select
+        placeholder="Select an option"
+        value={value}
+        onChange={(e) => {
+          onChange(parseInt(e.currentTarget.value));
+        }}
+      >
+        {options.map((o, i) => (
+          <option key={`option-${i}`} value={o.id}>
+            {o.description}
+          </option>
+        ))}
+      </Select>
+    )}
   </FormControl>
 );
 
