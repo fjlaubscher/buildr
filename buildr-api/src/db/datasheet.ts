@@ -26,7 +26,10 @@ export const getDataSheetsBySubFactionIdAsync = async (subFactionId: number) => 
   return mapFromPSQL<buildr.DataSheet>(rows);
 };
 
-export const getDataSheetsBySubFactionIdAndBattlefieldRoleIdAsync = async (subFactionId: number, battlefieldRoleId: number) => {
+export const getDataSheetsBySubFactionIdAndBattlefieldRoleIdAsync = async (
+  subFactionId: number,
+  battlefieldRoleId: number
+) => {
   const client = new Client();
   await client.connect();
 

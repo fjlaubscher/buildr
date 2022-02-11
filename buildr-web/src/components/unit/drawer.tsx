@@ -27,13 +27,13 @@ const UnitDrawer = ({ title, children, isOpen, onClose }: Props) => {
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader>{title}</DrawerHeader>
-        <DrawerBody>{children}</DrawerBody>
+        <DrawerBody py={0}>{children}</DrawerBody>
         <DrawerFooter>
           <Button variant="outline" mr={3} onClick={onClose}>
             Cancel
           </Button>
           <Button form="list-unit-form" type="submit" colorScheme="blue">
-            Save
+            Add
           </Button>
         </DrawerFooter>
       </DrawerContent>

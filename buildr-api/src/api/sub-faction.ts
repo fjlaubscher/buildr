@@ -45,7 +45,10 @@ router.get('/:id/datasheets/by-battlefield-role/:battlefieldRoleId', async (req,
   try {
     const factionId = parseInt(req.params.id);
     const battlefieldRoleId = parseInt(req.params.battlefieldRoleId);
-    const dataSheets = await getDataSheetsBySubFactionIdAndBattlefieldRoleIdAsync(factionId, battlefieldRoleId);
+    const dataSheets = await getDataSheetsBySubFactionIdAndBattlefieldRoleIdAsync(
+      factionId,
+      battlefieldRoleId
+    );
     return res.status(200).json({ status: 'ok', data: dataSheets });
   } catch (ex: any) {
     return res.status(500).json({ status: 'error', data: ex.message });

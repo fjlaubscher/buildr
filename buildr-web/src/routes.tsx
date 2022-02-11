@@ -6,6 +6,7 @@ import AdminRoute from './components/admin-route';
 
 // containers
 const Home = lazy(() => import('./containers'));
+const List = lazy(() => import('./containers/list'));
 
 const Admin = lazy(() => import('./containers/admin'));
 const DataSheetAdmin = lazy(() => import('./containers/admin/datasheet'));
@@ -39,6 +40,7 @@ const AppRoutes = () => (
         </AdminRoute>
       }
     />
+    <Route path="/list/:key" element={<List />} />
     <Route path="/" element={<Home />} />
     <Route path="*" element={<NotFound />} />
   </Routes>

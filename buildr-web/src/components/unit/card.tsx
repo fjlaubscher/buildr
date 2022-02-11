@@ -7,25 +7,32 @@ import {
   Text,
   useColorModeValue,
   Wrap,
-  WrapItem
+  WrapItem,
+  HStack
 } from '@chakra-ui/react';
-import { MdDelete } from 'react-icons/md';
+import { MdCopyAll, MdDelete } from 'react-icons/md';
 
 interface Props {
   unit: buildr.List.Unit;
-  onDeleteClick?: () => void;
+  onDuplicateClick: () => void;
+  onDeleteClick: () => void;
 }
 
-const UnitCard = ({ unit, onDeleteClick }: Props) => {
+const UnitCard = ({ unit, onDuplicateClick, onDeleteClick }: Props) => {
   const background = useColorModeValue('white', 'gray.800');
 
   return (
     <Box position="relative" background={background} borderRadius={4} width="100%" p={4} zIndex={1}>
-      {onDeleteClick && (
+      <HStack position="absolute" top={1} right={1}>
         <IconButton
-          position="absolute"
-          top={1}
-          right={1}
+          size="md"
+          aria-label="Duplicate"
+          icon={<MdCopyAll />}
+          onClick={onDuplicateClick}
+          variant="ghost"
+          zIndex={2}
+        />
+        <IconButton
           size="md"
           aria-label="Delete"
           icon={<MdDelete />}
@@ -33,16 +40,17 @@ const UnitCard = ({ unit, onDeleteClick }: Props) => {
           variant="ghost"
           zIndex={2}
         />
-      )}
+      </HStack>
       <VStack alignItems="flex-start" width="100%">
         <Text>
+          {unit.models > 1 ? `${unit.models} x ` : ''}
           {unit.datasheet.description} ({unit.points})
         </Text>
         <Wrap width="100%">
           {unit.upgrades.map((up, i) => (
             <WrapItem key={`${unit.key}-upgrade-${i}`}>
               <Tag size="sm" colorScheme="green">
-                {up.description} ({up.points})
+                {up.description}
               </Tag>
             </WrapItem>
           ))}

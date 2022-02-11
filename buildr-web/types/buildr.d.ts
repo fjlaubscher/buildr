@@ -48,10 +48,13 @@ declare namespace buildr {
   }
   
   interface List {
+    key: string;
+    name: string;
+    points: number;
+    gameSizeId: number;
     units: buildr.List.Unit[];
     factionId: number;
-    subFactionId: number;
-    points: number;
+    subFactionId: number;    
   }
 
   interface SubFactionDictionary {

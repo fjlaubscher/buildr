@@ -1,9 +1,12 @@
 import React from 'react';
-import { Center, CircularProgress, FormControl, FormLabel, Select } from '@chakra-ui/react';
+import { Center, CircularProgress, FormControl, FormLabel } from '@chakra-ui/react';
+
+// components
+import Select from '../select';
 
 interface Props {
   label: string;
-  options: SelectOption[];
+  options?: SelectOption[];
   isRequired?: boolean;
   isLoading?: boolean;
   onChange: (value: number) => void;
@@ -19,19 +22,7 @@ const SelectField = ({ label, value, options, isRequired, isLoading, onChange, m
         <CircularProgress isIndeterminate />
       </Center>
     ) : (
-      <Select
-        placeholder="Select an option"
-        value={value}
-        onChange={(e) => {
-          onChange(parseInt(e.currentTarget.value));
-        }}
-      >
-        {options.map((o, i) => (
-          <option key={`option-${i}`} value={o.id}>
-            {o.description}
-          </option>
-        ))}
-      </Select>
+      <Select options={options} isLoading={isLoading} value={value} onChange={onChange} />
     )}
   </FormControl>
 );

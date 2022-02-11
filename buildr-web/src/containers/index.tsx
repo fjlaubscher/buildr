@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Alert,
   AlertDescription,
@@ -7,35 +7,42 @@ import {
   Box,
   Button,
   Divider,
-  Heading,
+  HStack,
+  Input,
   Link,
-  useDisclosure
+  useDisclosure,
+  useMediaQuery
 } from '@chakra-ui/react';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { MdAdd, MdShare } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { v4 as UUID } from 'uuid';
+import { FormProvider, useForm } from 'react-hook-form';
+import { MdAdd } from 'react-icons/md';
 
 // components
+import DrawerForm from '../components/drawer-form';
+import ListCard from '../components/list/card';
+import ListForm from '../components/list/form';
 import Layout from '../components/layout';
-import SelectField from '../components/field/select';
-import UnitDrawer from '../components/unit/drawer';
-import UnitForm from '../components/unit/form';
 
 // state
-import { FactionAtom, SubFactionAtom } from '../state/config';
-import { ListAtom } from '../state/list';
-import UnitCard from '../components/unit/card';
+import { ListsAtom } from '../state/list';
+import { LISTS_KEY } from '../helpers/storage';
 
 const Home = () => {
+  const [isSmallDesktop] = useMediaQuery('(min-width: 1024px)');
+  const navigate = useNavigate();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [lists, setLists] = useRecoilState(ListsAtom);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const factions = useRecoilValue(FactionAtom);
-  const subFactions = useRecoilValue(SubFactionAtom);
-  const [list, setList] = useRecoilState(ListAtom);
+  const filteredLists = useMemo(
+    () => (searchTerm ? lists.filter((l) => l.name.toLowerCase().includes(searchTerm)) : lists),
+    [searchTerm]
+  );
 
-  const showSubFactions = subFactions[list.factionId] && subFactions[list.factionId].length > 1;
-  const hasSelectedFactionAndSubFaction = list.factionId && list.subFactionId;
-
-  console.log(list);
+  const form = useForm<buildr.List>({ mode: 'onChange' });
 
   return (
     <Layout title="Home">
@@ -57,60 +64,57 @@ const Home = () => {
           </AlertDescription>
         </Box>
       </Alert>
-      <SelectField
-        label="Codex"
-        options={factions}
-        value={list.factionId}
-        onChange={(value) => {
-          const hasMultipleSubFactions = subFactions[value] && subFactions[value].length > 1;
-          setList({
-            factionId: value,
-            subFactionId: hasMultipleSubFactions ? 0 : subFactions[value][0].id,
-            units: [],
-            points: 0
-          });
-        }}
-      />
-      {showSubFactions && (
-        <SelectField
-          label="Supplement"
-          options={subFactions[list.factionId]}
-          value={list.subFactionId}
-          onChange={(value) => {
-            setList({
-              factionId: list.factionId,
-              subFactionId: value,
-              units: [],
-              points: 0
-            });
+      <HStack width="100%" alignItems="center" justifyContent="space-between">
+        <Input
+          maxWidth={isSmallDesktop ? '50%' : undefined}
+          placeholder="Search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.currentTarget.value.toLowerCase())}
+        />
+        <Button colorScheme="blue" leftIcon={<MdAdd />} onClick={onOpen}>
+          New List
+        </Button>
+      </HStack>
+      <Divider mt="1rem !important" mb="0.5rem !important" />
+      {filteredLists.map((l) => (
+        <ListCard
+          key={l.key}
+          list={l}
+          onDeleteClick={() => {
+            const newLists = lists.filter((sl) => sl.key !== l.key);
+            setLists(newLists);
+            localStorage.setItem(LISTS_KEY, JSON.stringify(newLists));
           }}
         />
-      )}
-      <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" py={4}>
-        <Heading size="lg">List</Heading>
-        {hasSelectedFactionAndSubFaction && (
-          <Box display="flex" alignItems="center">
-            <Button type="button" colorScheme="blue" onClick={onOpen} leftIcon={<MdAdd />}>
-              Add Unit
-            </Button>
-            <Button ml={4} type="button" colorScheme="blue" leftIcon={<MdShare />}>
-              Share
-            </Button>
-          </Box>
-        )}
-      </Box>
-      <Divider />
-      {list.units.map((u) => (
-        <UnitCard key={u.key} unit={u} />
       ))}
-      <UnitDrawer title="New Unit" isOpen={isOpen} onClose={onClose}>
-        <UnitForm
-          onSubmit={(unit) => {
-            setList({ ...list, units: [...list.units, unit], points: list.points + unit.points });
-            onClose();
-          }}
-        />
-      </UnitDrawer>
+      <FormProvider {...form}>
+        <DrawerForm
+          formId="list-form"
+          title="New List"
+          isValid={form.formState.isValid}
+          isSubmitting={form.formState.isSubmitting}
+          isOpen={isOpen}
+          onClose={onClose}
+        >
+          <ListForm
+            onSubmit={(list) => {
+              const key = UUID();
+              const newList: buildr.List = {
+                ...list,
+                key,
+                units: [],
+                points: 0
+              };
+              const newLists = [...lists, newList];
+              setLists(newLists);
+              localStorage.setItem(LISTS_KEY, JSON.stringify(newLists));
+
+              onClose();
+              navigate(`/list/${key}`);
+            }}
+          />
+        </DrawerForm>
+      </FormProvider>
     </Layout>
   );
 };

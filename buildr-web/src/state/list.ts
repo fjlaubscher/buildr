@@ -1,11 +1,20 @@
 import { atom } from 'recoil';
+import { v4 as UUID } from 'uuid';
+
+export const ListsAtom = atom<buildr.List[]>({
+  key: 'lists',
+  default: []
+});
 
 export const ListAtom = atom<buildr.List>({
   key: 'list',
   default: {
-    points: 0,
+    key: UUID(),
+    name: 'New List',
     factionId: 0,
     subFactionId: 0,
-    units: []
+    units: [],
+    points: 0,
+    gameSizeId: 0
   }
-})
+});

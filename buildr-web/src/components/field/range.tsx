@@ -43,11 +43,18 @@ const RangeField = ({ label, value, isRequired, onChange, minimum, maximum }: Pr
       <SimpleGrid alignItems="center" width="100%" columns={2}>
         <FormLabel m="0 !important">{label}</FormLabel>
         <HStack width="100%">
-          <Button {...dec} p={0}>
+          <Button size="sm" {...dec} p={0}>
             <MdRemove />
           </Button>
-          <Input {...input} background={background} value={value} px={1} textAlign="center" />
-          <Button {...inc} p={0}>
+          <Input
+            size="sm"
+            {...input}
+            background={background}
+            value={value}
+            px={1}
+            textAlign="center"
+          />
+          <Button size="sm" {...inc} p={0}>
             <MdAdd />
           </Button>
         </HStack>
