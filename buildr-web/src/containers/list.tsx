@@ -7,10 +7,12 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  useDisclosure
+  useDisclosure,
+  useMediaQuery,
+  useToast
 } from '@chakra-ui/react';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { MdAdd, MdShare } from 'react-icons/md';
+import { MdAdd, MdShare, MdCopyAll } from 'react-icons/md';
 import { v4 as UUID } from 'uuid';
 import { useParams } from 'react-router-dom';
 
@@ -22,14 +24,18 @@ import UnitForm from '../components/unit/form';
 
 // helpers
 import { LISTS_KEY } from '../helpers/storage';
-import { PointsLimit } from '../helpers/list';
+import { PointsLimit, exportToChat } from '../helpers/list';
+import { SUCCESS_MESSAGE } from '../helpers/messages';
 
 // state
 import { SubFactionAtom } from '../state/config';
 import { ListAtom, ListsAtom } from '../state/list';
 
 const List = () => {
+  const [isSmallDesktop] = useMediaQuery('(min-width: 1024px)');
   const { key } = useParams();
+
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const subFactions = useRecoilValue(SubFactionAtom);
@@ -62,7 +68,44 @@ const List = () => {
   return (
     <Layout
       title={list.name}
-      actionComponent={<IconButton aria-label="Share" colorScheme="blue" icon={<MdShare />} />}
+      actionComponent={
+        <IconButton
+          aria-label="Share"
+          colorScheme="blue"
+          icon={isSmallDesktop ? <MdCopyAll /> : <MdShare />}
+          onClick={async () => {
+            try {
+              if (subFaction) {
+                if (isSmallDesktop) {
+                  await navigator.clipboard.writeText(
+                    `${exportToChat(list, subFaction)}https://buildr.pileofshame.club`
+                  );
+                  toast({
+                    title: SUCCESS_MESSAGE,
+                    description: 'List copied',
+                    status: 'success',
+                    isClosable: true
+                  });
+                } else {
+                  await navigator.share({
+                    title: list.name,
+                    text: exportToChat(list, subFaction),
+                    url: 'https://buildr.pileofshame.club'
+                  });
+                  toast({
+                    title: SUCCESS_MESSAGE,
+                    description: 'List shared.',
+                    status: 'success',
+                    isClosable: true
+                  });
+                }
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          }}
+        />
+      }
     >
       <HStack width="100%" alignItems="center" justifyContent="space-between">
         <Stat>

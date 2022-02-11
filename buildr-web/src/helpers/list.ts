@@ -25,3 +25,21 @@ export const PointsLimit = Object.freeze({
   [GameSize.STRIKE_FORCE]: 2000,
   [GameSize.ONSLAUGHT]: 3000
 });
+
+const exportUnitUpgradesToChat = (upgrades: buildr.DataSheetUpgrade[]) =>
+  upgrades.length > 0
+    ? `\n${upgrades.map((up) => `- ${up.description} (${up.points})`).join('\n')}`
+    : '';
+
+const exportUnitToChat = (unit: buildr.List.Unit) =>
+  `*${unit.datasheet.description}* (${
+    unit.datasheet.points * unit.models
+  })${exportUnitUpgradesToChat(unit.upgrades)}`;
+
+export const exportToChat = (list: buildr.List, subFaction: buildr.SubFaction) => {
+  return `*${list.name}*\n*Faction*: ${subFaction.description}\n*Game Size*: ${
+    GameSizes[list.gameSizeId]
+  }\n*Points*: ${list.points}/${PointsLimit[list.gameSizeId]}\n\n${list.units
+    .map(exportUnitToChat)
+    .join('\n\n')}\n\n`;
+};

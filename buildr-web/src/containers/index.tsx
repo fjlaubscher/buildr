@@ -39,7 +39,7 @@ const Home = () => {
 
   const filteredLists = useMemo(
     () => (searchTerm ? lists.filter((l) => l.name.toLowerCase().includes(searchTerm)) : lists),
-    [searchTerm]
+    [lists, searchTerm]
   );
 
   const form = useForm<buildr.List>({ mode: 'onChange' });
@@ -66,7 +66,7 @@ const Home = () => {
       </Alert>
       <HStack width="100%" alignItems="center" justifyContent="space-between">
         <Input
-          maxWidth={isSmallDesktop ? '50%' : undefined}
+          maxWidth={isSmallDesktop ? '50%' : '70%'}
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.currentTarget.value.toLowerCase())}
