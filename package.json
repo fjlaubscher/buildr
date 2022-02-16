@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "buildr-api",
-    "buildr-web"
+    "buildr-web",
+    "buildr-cli"
   ],
   "scripts": {
     "build": "yarn workspaces run build",
