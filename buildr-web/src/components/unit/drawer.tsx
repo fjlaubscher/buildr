@@ -33,7 +33,7 @@ const UnitDrawer = ({ title, children, isOpen, onClose }: Props) => {
             Cancel
           </Button>
           <Button form="list-unit-form" type="submit" colorScheme="blue">
-            Add
+            Submit
           </Button>
         </DrawerFooter>
       </DrawerContent>

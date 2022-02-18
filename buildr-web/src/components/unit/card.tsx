@@ -10,27 +10,34 @@ import {
   WrapItem,
   HStack
 } from '@chakra-ui/react';
-import { MdCopyAll, MdDelete } from 'react-icons/md';
+import { MdCopyAll, MdDelete, MdEdit } from 'react-icons/md';
 
 interface Props {
   unit: buildr.List.Unit;
+  onEditClick: () => void;
   onDuplicateClick: () => void;
   onDeleteClick: () => void;
 }
 
-const UnitCard = ({ unit, onDuplicateClick, onDeleteClick }: Props) => {
+const UnitCard = ({ unit, onEditClick, onDuplicateClick, onDeleteClick }: Props) => {
   const background = useColorModeValue('white', 'gray.800');
 
   return (
     <Box position="relative" background={background} borderRadius={4} width="100%" p={4} zIndex={1}>
-      <HStack position="absolute" top={1} right={1}>
+      <HStack position="absolute" top={1} right={1} zIndex={3}>
+        <IconButton
+          size="md"
+          aria-label="Edit"
+          icon={<MdEdit />}
+          onClick={onEditClick}
+          variant="ghost"
+        />
         <IconButton
           size="md"
           aria-label="Duplicate"
           icon={<MdCopyAll />}
           onClick={onDuplicateClick}
           variant="ghost"
-          zIndex={2}
         />
         <IconButton
           size="md"
@@ -38,7 +45,6 @@ const UnitCard = ({ unit, onDuplicateClick, onDeleteClick }: Props) => {
           icon={<MdDelete />}
           onClick={onDeleteClick}
           variant="ghost"
-          zIndex={2}
         />
       </HStack>
       <VStack alignItems="flex-start" width="100%">

@@ -19,7 +19,7 @@ const Select = ({ options, value, onChange, isLoading, mb }: Props) => (
     }}
     icon={
       isLoading ? (
-        <CircularProgress width="100%" height="100%" isIndeterminate />
+        <CircularProgress size="1rem" isIndeterminate />
       ) : (
         <MdArrowDropDown />
       )

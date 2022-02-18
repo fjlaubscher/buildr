@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Divider,
@@ -41,6 +41,8 @@ const List = () => {
   const subFactions = useRecoilValue(SubFactionAtom);
   const [list, setList] = useRecoilState(ListAtom);
   const [lists, setLists] = useRecoilState(ListsAtom);
+
+  const [unitToEdit, setUnitToEdit] = useState<buildr.List.Unit | undefined>(undefined);
 
   useEffect(() => {
     if (!list || list.key !== key) {
@@ -101,7 +103,7 @@ const List = () => {
                 }
               }
             } catch (err) {
-              console.log(err);
+              console.error(err);
             }
           }}
         />
@@ -120,21 +122,16 @@ const List = () => {
         </Stat>
       </HStack>
       <HStack width="100%" mb="1rem !important" alignItems="center" justifyContent="flex-end">
-        <Button colorScheme="blue" leftIcon={<MdAdd />} onClick={onOpen}>
+        <Button colorScheme="blue" leftIcon={<MdAdd />} onClick={() => {
+          setUnitToEdit(undefined);
+          onOpen();
+        }}>
           Add Unit
         </Button>
       </HStack>
       <Divider />
       <ListView
         list={list}
-        onDuplicateClick={(key) => {
-          const unitToDuplicate = list.units.filter((u) => u.key === key)[0];
-          saveListAndSync({
-            ...list,
-            units: [...list.units, { ...unitToDuplicate, key: UUID() }],
-            points: list.points + unitToDuplicate.points
-          });
-        }}
         onDeleteClick={(key) => {
           const unitToRemove = list.units.filter((u) => u.key === key)[0];
           saveListAndSync({
@@ -143,14 +140,31 @@ const List = () => {
             points: list.points - unitToRemove.points
           });
         }}
+        onDuplicateClick={(key) => {
+          const unitToDuplicate = list.units.filter((u) => u.key === key)[0];
+          saveListAndSync({
+            ...list,
+            units: [...list.units, { ...unitToDuplicate, key: UUID() }],
+            points: list.points + unitToDuplicate.points
+          });
+        }}
+        onEditClick={(key) => {
+          const unit = list.units.filter((u) => u.key === key)[0];
+          setUnitToEdit(unit);
+          onOpen();
+        }}
       />
-      <UnitDrawer title="New Unit" isOpen={isOpen} onClose={onClose}>
+      <UnitDrawer title={unitToEdit ? 'Edit Unit' : 'New Unit'} isOpen={isOpen} onClose={onClose}>
         <UnitForm
+          initialValues={unitToEdit}
           onSubmit={(unit) => {
+            const existingUnits = unitToEdit ? list.units.filter(u => u.key !== unitToEdit.key) : list.units;
+            const listPoints = unitToEdit ? list.points - unitToEdit.points : list.points;
+            
             saveListAndSync({
               ...list,
-              units: [...list.units, unit],
-              points: list.points + unit.points
+              units: [...existingUnits, unit],
+              points: listPoints + unit.points
             });
             onClose();
           }}

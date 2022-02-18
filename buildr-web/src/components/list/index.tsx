@@ -11,9 +11,10 @@ interface Props {
   list: buildr.List;
   onDeleteClick: (key: string) => void;
   onDuplicateClick: (key: string) => void;
+  onEditClick: (key: string) => void;
 }
 
-const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
+const List = ({ list, onDeleteClick, onDuplicateClick, onEditClick }: Props) => {
   const hqs = list.units.filter((u) => u.datasheet.battlefieldRoleId === BattlefieldRoleTypes.HQ);
   const troops = list.units.filter(
     (u) => u.datasheet.battlefieldRoleId === BattlefieldRoleTypes.TROOPS
@@ -47,6 +48,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="HQ"
           image={`/battlefield-role/${BattlefieldRoleTypes.HQ}.png`}
           units={hqs}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />
@@ -57,6 +59,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="Troops"
           image={`/battlefield-role/${BattlefieldRoleTypes.TROOPS}.png`}
           units={troops}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />
@@ -67,6 +70,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="Elites"
           image={`/battlefield-role/${BattlefieldRoleTypes.ELITES}.png`}
           units={elites}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />
@@ -77,6 +81,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="Fast Attack"
           image={`/battlefield-role/${BattlefieldRoleTypes.FAST_ATTACK}.png`}
           units={fastAttack}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />
@@ -87,6 +92,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="Flyer"
           image={`/battlefield-role/${BattlefieldRoleTypes.FLYER}.png`}
           units={flyers}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />
@@ -97,6 +103,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="Heavy Support"
           image={`/battlefield-role/${BattlefieldRoleTypes.HEAVY_SUPPORT}.png`}
           units={heavySupport}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />
@@ -107,6 +114,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="Fortification"
           image={`/battlefield-role/${BattlefieldRoleTypes.FORTIFICATION}.png`}
           units={fortifications}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />
@@ -117,6 +125,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="Dedicated Transport"
           image={`/battlefield-role/${BattlefieldRoleTypes.DEDICATED_TRANSPORT}.png`}
           units={dedicatedTransports}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />
@@ -127,6 +136,7 @@ const List = ({ list, onDeleteClick, onDuplicateClick }: Props) => {
           title="Lord of War"
           image={`/battlefield-role/${BattlefieldRoleTypes.LORD_OF_WAR}.png`}
           units={lordsOfWar}
+          onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
           onDuplicateClick={onDuplicateClick}
         />

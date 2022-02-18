@@ -12,13 +12,6 @@ export const GameSizes = Object.freeze({
   [GameSize.ONSLAUGHT]: 'Onslaught'
 });
 
-export const CommandPoints = Object.freeze({
-  [GameSize.COMBAT_PATROL]: 3,
-  [GameSize.INCURSION]: 6,
-  [GameSize.STRIKE_FORCE]: 12,
-  [GameSize.ONSLAUGHT]: 18
-});
-
 export const PointsLimit = Object.freeze({
   [GameSize.COMBAT_PATROL]: 500,
   [GameSize.INCURSION]: 1000,
@@ -32,14 +25,17 @@ const exportUnitUpgradesToChat = (upgrades: buildr.DataSheetUpgrade[]) =>
     : '';
 
 const exportUnitToChat = (unit: buildr.List.Unit) =>
-  `*${unit.datasheet.description}* (${
+  `*${unit.models > 1 ? `${unit.models} x ` : ''}${unit.datasheet.description}* (${
     unit.datasheet.points * unit.models
   })${exportUnitUpgradesToChat(unit.upgrades)}`;
 
 export const exportToChat = (list: buildr.List, subFaction: buildr.SubFaction) => {
+  const units = [...list.units];
+  units.sort((a, b) => a.datasheet.battlefieldRoleId - b.datasheet.battlefieldRoleId);
+
   return `*${list.name}*\n*Faction*: ${subFaction.description}\n*Game Size*: ${
     GameSizes[list.gameSizeId]
-  }\n*Points*: ${list.points}/${PointsLimit[list.gameSizeId]}\n\n${list.units
+  }\n*Points*: ${list.points}/${PointsLimit[list.gameSizeId]}\n\n${units
     .map(exportUnitToChat)
     .join('\n\n')}\n\n`;
 };
