@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   Box,
   IconButton,
   VStack,
@@ -8,9 +9,16 @@ import {
   useColorModeValue,
   Wrap,
   WrapItem,
-  HStack
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+  PopoverHeader,
+  Portal
 } from '@chakra-ui/react';
-import { MdCopyAll, MdDelete, MdEdit } from 'react-icons/md';
+import { MdMoreHoriz, MdCopyAll, MdDelete, MdEdit } from 'react-icons/md';
 
 interface Props {
   unit: buildr.List.Unit;
@@ -23,44 +31,75 @@ const UnitCard = ({ unit, onEditClick, onDuplicateClick, onDeleteClick }: Props)
   const background = useColorModeValue('white', 'gray.800');
 
   return (
-    <Box position="relative" background={background} borderRadius={4} width="100%" p={4} zIndex={1}>
-      <HStack position="absolute" top={1} right={1} zIndex={3}>
-        <IconButton
-          size="md"
-          aria-label="Edit"
-          icon={<MdEdit />}
-          onClick={onEditClick}
-          variant="ghost"
-        />
-        <IconButton
-          size="md"
-          aria-label="Duplicate"
-          icon={<MdCopyAll />}
-          onClick={onDuplicateClick}
-          variant="ghost"
-        />
-        <IconButton
-          size="md"
-          aria-label="Delete"
-          icon={<MdDelete />}
-          onClick={onDeleteClick}
-          variant="ghost"
-        />
-      </HStack>
+    <Box position="relative" background={background} borderRadius={4} width="100%" p={4}>
       <VStack alignItems="flex-start" width="100%">
-        <Text>
+        <Popover matchWidth>
+          <PopoverTrigger>
+            <IconButton
+              position="absolute"
+              top={0}
+              right={0}
+              size="md"
+              aria-label="Menu"
+              icon={<MdMoreHoriz />}
+              variant="ghost"
+            />
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverHeader>Actions</PopoverHeader>
+              <PopoverCloseButton />
+              <PopoverBody>
+                <VStack width="100%">
+                  <Button
+                    width="100%"
+                    size="sm"
+                    type="button"
+                    leftIcon={<MdEdit />}
+                    onClick={onEditClick}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    width="100%"
+                    size="sm"
+                    type="button"
+                    leftIcon={<MdCopyAll />}
+                    onClick={onDuplicateClick}
+                  >
+                    Duplicate
+                  </Button>
+                  <Button
+                    width="100%"
+                    size="sm"
+                    type="button"
+                    colorScheme="red"
+                    leftIcon={<MdDelete />}
+                    onClick={onDeleteClick}
+                  >
+                    Delete
+                  </Button>
+                </VStack>
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        </Popover>
+        <Text mt="0 !important">
           {unit.models > 1 ? `${unit.models} x ` : ''}
           {unit.datasheet.description} ({unit.points})
         </Text>
-        <Wrap width="100%">
-          {unit.upgrades.map((up, i) => (
-            <WrapItem key={`${unit.key}-upgrade-${i}`}>
-              <Tag size="sm" colorScheme="green">
-                {up.description}
-              </Tag>
-            </WrapItem>
-          ))}
-        </Wrap>
+        {unit.upgrades && unit.upgrades.length && (
+          <Wrap width="100%">
+            {unit.upgrades.map((up, i) => (
+              <WrapItem key={`${unit.key}-upgrade-${i}`}>
+                <Tag size="sm" colorScheme="green">
+                  {up.description}
+                </Tag>
+              </WrapItem>
+            ))}
+          </Wrap>
+        )}
       </VStack>
     </Box>
   );

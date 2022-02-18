@@ -174,9 +174,16 @@ const UnitForm = ({ initialValues, onSubmit }: Props) => {
 
               function onDecrement() {
                 if (unit) {
-                  const upgradeIndex = unit.upgrades.indexOf(u);
+                  let upgradeIndex = -1;
+                  const upgrades = [...unit.upgrades];
+
+                  for (let i = 0; i < upgrades.length; i++) {
+                    if (u.id === upgrades[i].id) {
+                      upgradeIndex = i;
+                    }
+                  }
+
                   if (upgradeIndex >= 0) {
-                    const upgrades = unit.upgrades;
                     upgrades.splice(upgradeIndex, 1);
 
                     setUnit({
