@@ -122,10 +122,14 @@ const List = () => {
         </Stat>
       </HStack>
       <HStack width="100%" mb="1rem !important" alignItems="center" justifyContent="flex-end">
-        <Button colorScheme="blue" leftIcon={<MdAdd />} onClick={() => {
-          setUnitToEdit(undefined);
-          onOpen();
-        }}>
+        <Button
+          colorScheme="blue"
+          leftIcon={<MdAdd />}
+          onClick={() => {
+            setUnitToEdit(undefined);
+            onOpen();
+          }}
+        >
           Add Unit
         </Button>
       </HStack>
@@ -158,9 +162,11 @@ const List = () => {
         <UnitForm
           initialValues={unitToEdit}
           onSubmit={(unit) => {
-            const existingUnits = unitToEdit ? list.units.filter(u => u.key !== unitToEdit.key) : list.units;
+            const existingUnits = unitToEdit
+              ? list.units.filter((u) => u.key !== unitToEdit.key)
+              : list.units;
             const listPoints = unitToEdit ? list.points - unitToEdit.points : list.points;
-            
+
             saveListAndSync({
               ...list,
               units: [...existingUnits, unit],

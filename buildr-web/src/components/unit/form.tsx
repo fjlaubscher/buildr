@@ -35,8 +35,12 @@ const UnitForm = ({ initialValues, onSubmit }: Props) => {
   const roles = useRecoilValue(BattlefieldRoleAtom);
 
   const [accordionIndex, setAccordionIndex] = useState(initialValues ? 1 : 0);
-  const [battlefieldRoleId, setBattlefieldRoleId] = useState(initialValues ? initialValues.datasheet.battlefieldRoleId : 0);
-  const [datasheet, setDatasheet] = useState<buildr.DataSheet | undefined>(initialValues ? initialValues.datasheet : undefined);
+  const [battlefieldRoleId, setBattlefieldRoleId] = useState(
+    initialValues ? initialValues.datasheet.battlefieldRoleId : 0
+  );
+  const [datasheet, setDatasheet] = useState<buildr.DataSheet | undefined>(
+    initialValues ? initialValues.datasheet : undefined
+  );
   const [unit, setUnit] = useState<buildr.List.Unit | undefined>(initialValues);
 
   const { loading: loadingDatasheets, value: datasheets } = useAsync(async () => {
@@ -170,7 +174,7 @@ const UnitForm = ({ initialValues, onSubmit }: Props) => {
 
               function onDecrement() {
                 if (unit) {
-                  const upgradeIndex = unit.upgrades.indexOf(u);                 
+                  const upgradeIndex = unit.upgrades.indexOf(u);
                   if (upgradeIndex >= 0) {
                     const upgrades = unit.upgrades;
                     upgrades.splice(upgradeIndex, 1);

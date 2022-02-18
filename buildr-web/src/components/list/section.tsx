@@ -13,7 +13,14 @@ interface Props {
   onEditClick: (key: string) => void;
 }
 
-const ListSection = ({ image, title, units, onDeleteClick, onDuplicateClick, onEditClick }: Props) => (
+const ListSection = ({
+  image,
+  title,
+  units,
+  onDeleteClick,
+  onDuplicateClick,
+  onEditClick
+}: Props) => (
   <VStack width="100%">
     <HStack width="100%">
       <Image width="2.5rem" src={image} alt={title} />

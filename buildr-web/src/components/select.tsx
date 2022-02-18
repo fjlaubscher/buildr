@@ -17,13 +17,7 @@ const Select = ({ options, value, onChange, isLoading, mb }: Props) => (
     onChange={(e) => {
       onChange(parseInt(e.currentTarget.value));
     }}
-    icon={
-      isLoading ? (
-        <CircularProgress size="1rem" isIndeterminate />
-      ) : (
-        <MdArrowDropDown />
-      )
-    }
+    icon={isLoading ? <CircularProgress size="1rem" isIndeterminate /> : <MdArrowDropDown />}
     mb={mb}
   >
     {options &&
