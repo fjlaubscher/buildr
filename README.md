@@ -19,6 +19,14 @@ yarn
 ```
 
 ## Database
+### Using Docker
+```
+docker-compose up -d
+docker exec -i buildr_db_1 /bin/bash -c "PGPASSWORD=pg_password psql -U postgres buildr" < /path/on/your/machine/dump.sql
+```
+
+### Using local Postgres instance
+
 ```
 psql -U postgres
 CREATE DATABASE buildr;
