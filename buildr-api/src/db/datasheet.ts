@@ -13,7 +13,7 @@ export const getDatasheetByIdAsync = async (dataSheetId: number) => {
     [dataSheetId]
   );
   await client.end();
-  
+
   const datasheet = mapFromPSQL<buildr.DataSheet>(rows)[0];
   const subFactionIds = subFactionIdRows.map((r) => r['sub_faction_id'] as number);
   return { ...datasheet, subFactionIds } as buildr.DataSheet;
@@ -25,9 +25,9 @@ export const getDataSheetsAsync = async () => {
 
   const { rows } = await client.query<TableRow>('select * from datasheet');
   await client.end();
-  
+
   return mapFromPSQL<buildr.DataSheet>(rows);
-}
+};
 
 export const getDataSheetsBySubFactionIdAsync = async (subFactionId: number) => {
   const client = new Client();
@@ -121,9 +121,11 @@ export const updateDataSheetAsync = async (input: buildr.DataSheet) => {
     input.points,
     input.id
   ]);
-  
-  await client.query<TableRow>('delete from sub_faction_datasheet where datasheet_id = $1', [input.id]);
-  
+
+  await client.query<TableRow>('delete from sub_faction_datasheet where datasheet_id = $1', [
+    input.id
+  ]);
+
   const insertQuery = `
     insert into sub_faction_datasheet (datasheet_id, sub_faction_id)
     values ${input.subFactionIds.map((id) => `(${input.id}, ${id})`).join(', ')}

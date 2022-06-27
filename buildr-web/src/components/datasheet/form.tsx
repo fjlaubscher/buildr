@@ -71,7 +71,7 @@ const DataSheetForm = ({ onSubmit }: Props) => {
         errorMessage={errors.points ? 'Required' : undefined}
         {...register('points', { required: true, valueAsNumber: true })}
       />
-      <Heading my={4} size="sm" fontWeight='medium'>
+      <Heading my={4} size="sm" fontWeight="medium">
         Sub Factions
       </Heading>
       <Stack mt={2} spacing={2} direction="column">
