@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Heading, IconButton, useDisclosure, useToast } from '@chakra-ui/react';
+import React, { useState, useMemo } from 'react';
+import { Heading, IconButton, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { useAsyncFn, useMount } from 'react-use';
 import { MdAdd } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
 
 // api
 import {
@@ -19,7 +20,11 @@ import DataSheetTable from '../../components/datasheet/table';
 import DeleteModal from '../../components/delete-modal';
 
 // helpers
+import { groupDataSheetsByRole } from '../../helpers/battlefield-role';
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
+
+// state
+import { BattlefieldRoleAtom } from '../../state/config';
 
 const DEFAULT_VALUES: buildr.DataSheet = {
   id: 0,
@@ -33,14 +38,20 @@ const DEFAULT_VALUES: buildr.DataSheet = {
 
 const Admin = () => {
   const toast = useToast();
+  const BattlefieldRoles = useRecoilValue(BattlefieldRoleAtom);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [idToDelete, setIdToDelete] = useState<number | undefined>(undefined);
 
-  const [{ loading, value: dataSheets }, fetchDatasheets] = useAsyncFn(getDataSheetsAsync);
+  const [{ loading, value: dataSheets }, fetchDataSheets] = useAsyncFn(getDataSheetsAsync);
 
   const form = useForm<buildr.DataSheet>({ mode: 'onChange', defaultValues: DEFAULT_VALUES });
 
-  useMount(fetchDatasheets);
+  useMount(fetchDataSheets);
+
+  const groupedDataSheets = useMemo(
+    () => (dataSheets ? groupDataSheetsByRole(dataSheets) : undefined),
+    [dataSheets]
+  );
 
   return (
     <Layout
@@ -59,7 +70,22 @@ const Admin = () => {
       <Heading mb="1rem !important" size="lg">
         Datasheets
       </Heading>
-      <DataSheetTable dataSheets={dataSheets || []} onDeleteClick={setIdToDelete} />
+      {groupedDataSheets &&
+        BattlefieldRoles.map(
+          (role) =>
+            groupedDataSheets[role.id] &&
+            groupedDataSheets[role.id].length > 0 && (
+              <VStack key={role.id} width="100%" mb="1rem !important">
+                <Heading mb="1rem !important" width="100%" size="md">
+                  {role.description}
+                </Heading>
+                <DataSheetTable
+                  dataSheets={groupedDataSheets[role.id]}
+                  onDeleteClick={setIdToDelete}
+                />
+              </VStack>
+            )
+        )}
       <FormProvider {...form}>
         <DrawerForm
           formId="datasheet-form"
@@ -79,7 +105,7 @@ const Admin = () => {
 
                 if (created) {
                   form.reset(DEFAULT_VALUES);
-                  fetchDatasheets();
+                  fetchDataSheets();
                   onClose();
 
                   toast({
@@ -118,7 +144,7 @@ const Admin = () => {
             });
 
             setIdToDelete(undefined);
-            fetchDatasheets();
+            fetchDataSheets();
           } else {
             toast({
               title: ERROR_MESSAGE,

@@ -200,7 +200,7 @@ const UnitForm = ({ initialValues, onSubmit }: Props) => {
                   key={`upgrade-${u.id}`}
                   label={u.description}
                   minimum={0}
-                  maximum={unit ? unit.models : 0}
+                  maximum={100}
                   value={total}
                   onChange={(value) => {
                     // this event fires on init, so we need the else-if
