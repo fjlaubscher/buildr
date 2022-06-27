@@ -10,7 +10,6 @@ const List = lazy(() => import('./containers/list'));
 
 const Admin = lazy(() => import('./containers/admin'));
 const DataSheetAdmin = lazy(() => import('./containers/admin/datasheet'));
-const SubFactionAdmin = lazy(() => import('./containers/admin/sub-faction'));
 
 const NotFound = lazy(() => import('./containers/not-found'));
 
@@ -21,14 +20,6 @@ const AppRoutes = () => (
       element={
         <AdminRoute>
           <Admin />
-        </AdminRoute>
-      }
-    />
-    <Route
-      path="/admin/sub-faction/:id"
-      element={
-        <AdminRoute>
-          <SubFactionAdmin />
         </AdminRoute>
       }
     />

@@ -5,7 +5,7 @@ export const getDatasheetUpgradeByIdAsync = async (id: number) => {
   const client = new Client();
   await client.connect();
 
-  const { rows } = await client.query<TableRow>('SELECT * from datasheet_upgrade where id = $1', [
+  const { rows } = await client.query<TableRow>('select * from datasheet_upgrade where id = $1', [
     id
   ]);
   await client.end();
@@ -18,7 +18,7 @@ export const getUpgradesByDataSheetIdAsync = async (dataSheetId: number) => {
   await client.connect();
 
   const { rows } = await client.query<TableRow>(
-    'SELECT * from datasheet_upgrade where datasheet_id = $1 order by description asc',
+    'select * from datasheet_upgrade where datasheet_id = $1 order by description asc',
     [dataSheetId]
   );
   await client.end();
@@ -31,13 +31,13 @@ export const createDataSheetUpgradeAsync = async (input: buildr.DataSheetUpgrade
   await client.connect();
 
   const query = `
-    INSERT INTO datasheet_upgrade (
+    insert into datasheet_upgrade (
       datasheet_id,
       description,
       points
     )
-    VALUES ($1, $2, $3)
-    RETURNING *
+    values ($1, $2, $3)
+    returning *
   `;
   const { rows } = await client.query<TableRow>(query, [
     input.datasheetId,
@@ -54,11 +54,11 @@ export const updateDataSheetUpgradeAsync = async (input: buildr.DataSheetUpgrade
   await client.connect();
 
   const query = `
-    UPDATE datasheet_upgrade
-    SET datasheet_id = $1,
+    update datasheet_upgrade
+    set datasheet_id = $1,
         description = $2,
         points = $3
-    WHERE id = $4
+    where id = $4
   `;
   await client.query<TableRow>(query, [
     input.datasheetId,
@@ -75,7 +75,7 @@ export const deleteDataSheetUpgradeAsync = async (id: number) => {
   const client = new Client();
   await client.connect();
 
-  const { rowCount } = await client.query<TableRow>('DELETE FROM datasheet_upgrade WHERE id = $1', [
+  const { rowCount } = await client.query<TableRow>('delete from datasheet_upgrade where id = $1', [
     id
   ]);
   await client.end();

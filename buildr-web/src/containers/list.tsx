@@ -24,7 +24,7 @@ import UnitForm from '../components/unit/form';
 
 // helpers
 import { LISTS_KEY } from '../helpers/storage';
-import { PointsLimit, exportToChat } from '../helpers/list';
+import { exportToChat } from '../helpers/list';
 import { SUCCESS_MESSAGE } from '../helpers/messages';
 
 // state
@@ -80,7 +80,7 @@ const List = () => {
               if (subFaction) {
                 if (isSmallDesktop) {
                   await navigator.clipboard.writeText(
-                    `${exportToChat(list, subFaction)}https://buildr.pileofshame.club`
+                    `${exportToChat(list, subFaction)}https://buildr.francoislaubscher.dev`
                   );
                   toast({
                     title: SUCCESS_MESSAGE,
@@ -92,7 +92,7 @@ const List = () => {
                   await navigator.share({
                     title: list.name,
                     text: exportToChat(list, subFaction),
-                    url: 'https://buildr.pileofshame.club'
+                    url: 'https://buildr.francoislaubscher.dev'
                   });
                   toast({
                     title: SUCCESS_MESSAGE,
@@ -111,13 +111,13 @@ const List = () => {
     >
       <HStack width="100%" alignItems="center" justifyContent="space-between">
         <Stat>
-          <StatLabel>Faction</StatLabel>
+          <StatLabel>Legion</StatLabel>
           <StatNumber>{subFaction ? subFaction.description : ''}</StatNumber>
         </Stat>
         <Stat>
           <StatLabel textAlign="right">Points</StatLabel>
           <StatNumber whiteSpace="nowrap" textAlign="right">
-            {list.points}/{PointsLimit[list.gameSizeId]}
+            {list.points}
           </StatNumber>
         </Stat>
       </HStack>

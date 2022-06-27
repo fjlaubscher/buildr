@@ -1,5 +1,8 @@
 import Fetch from '../helpers/fetch';
 
+export const getDataSheetsAsync = async () =>
+  Fetch<buildr.DataSheet[]>('/api/datasheet', { method: 'GET' });
+
 export const getDataSheetsBySubFactionIdAsync = async (subFactionId: string | number) =>
   Fetch<buildr.DataSheet[]>(`/api/sub-faction/${subFactionId}/datasheets`, { method: 'GET' });
 
@@ -13,7 +16,7 @@ export const getDataSheetsBySubFactionIdAndBattlefieldRoleIdAsync = async (
   );
 
 export const createDataSheetAsync = async (body: buildr.DataSheet) =>
-  Fetch<buildr.DataSheet>(`/api/sub-faction/${body.subFactionId}/datasheets`, {
+  Fetch<buildr.DataSheet>(`/api/datasheet`, {
     auth: true,
     method: 'POST',
     body

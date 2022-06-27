@@ -15,9 +15,6 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { MdVisibility, MdDelete } from 'react-icons/md';
 
-// helpers
-import { GameSizes } from '../../helpers/list';
-
 // state
 import { SubFactionAtom } from '../../state/config';
 
@@ -56,11 +53,6 @@ const ListCard = ({ list, onDeleteClick }: Props) => {
           {list.name} {list.points ? `(${list.points})` : ''}
         </Text>
         <Wrap width="100%">
-          <WrapItem>
-            <Tag size="sm" colorScheme="blue">
-              {GameSizes[list.gameSizeId]}
-            </Tag>
-          </WrapItem>
           <WrapItem>
             <Tag size="sm">{subFaction.description}</Tag>
           </WrapItem>

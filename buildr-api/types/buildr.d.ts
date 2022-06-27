@@ -23,7 +23,7 @@ declare namespace buildr {
   interface DataSheet {
     id: number;
     battlefieldRoleId: number;
-    subFactionId: number;
+    subFactionIds: number[];
     minimumModels: number;
     maximumModels: number;
     description: string;

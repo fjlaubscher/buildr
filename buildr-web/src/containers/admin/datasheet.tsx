@@ -93,12 +93,7 @@ const DataSheetAdmin = () => {
       }
       isAdmin
     >
-      <Button
-        as={Link}
-        to={`/admin/sub-faction/${dataSheet ? dataSheet.subFactionId : 0}`}
-        leftIcon={<MdArrowBack />}
-        mb={4}
-      >
+      <Button as={Link} to="/admin" leftIcon={<MdArrowBack />} mb={4}>
         Datasheets
       </Button>
       <SimpleGrid width="100%" columns={isSmallDesktop ? 2 : 1}>

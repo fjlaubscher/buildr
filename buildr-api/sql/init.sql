@@ -29,13 +29,11 @@ CREATE TABLE datasheet
 (
   id SERIAL PRIMARY KEY,
   battlefield_role_id INTEGER NOT NULL,
-  sub_faction_id INTEGER NOT NULL,
   minimum_models INTEGER NOT NULL,
   maximum_models INTEGER NOT NULL,
   description VARCHAR(50) NOT NULL,
   points INTEGER NOT NULL,
-  FOREIGN KEY (battlefield_role_id) REFERENCES battlefield_role(id) ON DELETE CASCADE,
-  FOREIGN KEY (sub_faction_id) REFERENCES sub_faction(id) ON DELETE CASCADE
+  FOREIGN KEY (battlefield_role_id) REFERENCES battlefield_role(id) ON DELETE CASCADE
 );
 CREATE INDEX ix_datasheet ON datasheet (id);
 
@@ -49,3 +47,14 @@ CREATE TABLE datasheet_upgrade
   FOREIGN KEY (datasheet_id) REFERENCES datasheet(id) ON DELETE CASCADE
 );
 CREATE INDEX ix_datasheet_upgrade ON datasheet_upgrade (id);
+
+-- Sub Faction Datasheet
+CREATE TABLE sub_faction_datasheet
+(
+  id SERIAL PRIMARY KEY,
+  datasheet_id INTEGER NOT NULL,
+  sub_faction_id INTEGER NOT NULL,
+  FOREIGN KEY (datasheet_id) REFERENCES datasheet(id) ON DELETE CASCADE,
+  FOREIGN KEY (sub_faction_id) REFERENCES sub_faction(id) ON DELETE CASCADE
+);
+CREATE INDEX ix_sub_faction_datasheet ON sub_faction_datasheet (id);

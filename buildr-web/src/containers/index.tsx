@@ -51,7 +51,7 @@ const Home = () => {
         <Box flex="1">
           <AlertTitle>👋 Hey!</AlertTitle>
           <AlertDescription display="block">
-            buildr is a free and open-source Warhammer 40,000 List Builder.
+            buildr is a free and open-source Warhammer: The Horus Heresy List Builder.
             <br />
             <Link
               textDecoration="underline"

@@ -1,6 +1,6 @@
 # What is buildr?
 
-`buildr` is a Warhammer 40K List Builder.<br/>
+`buildr` is a Warhammer: The Horus Heresy List Builder.<br/>
 It's still very much a work in progress and consists of an Express API and a React PWA.
 
 ## Getting Started
@@ -22,7 +22,8 @@ yarn
 ### Using Docker
 ```
 docker-compose up -d
-docker exec -i buildr_db_1 /bin/bash -c "PGPASSWORD=pg_password psql -U postgres buildr" < /path/on/your/machine/dump.sql
+docker exec -i buildr_db_1 /bin/bash -c "PGPASSWORD=postgres psql -U postgres buildr -a" < ./buildr-api/sql/init.sql
+docker exec -i buildr_db_1 /bin/bash -c "PGPASSWORD=postgres psql -U postgres buildr -a" < ./buildr-api/sql/seed-data/game-system.sql
 ```
 
 ### Using local Postgres instance

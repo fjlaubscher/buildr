@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 // db
-import { getDatasheetByIdAsync, updateDataSheetAsync, deleteDataSheetAsync } from '../db/datasheet';
+import { getDatasheetByIdAsync, updateDataSheetAsync, deleteDataSheetAsync, createDataSheetAsync, getDataSheetsAsync } from '../db/datasheet';
 import {
   createDataSheetUpgradeAsync,
   getUpgradesByDataSheetIdAsync
@@ -11,6 +11,28 @@ import {
 import { isAuthenticated } from '../helpers';
 
 const router = Router();
+
+router.get('/', async (req, res) => {
+  try {
+    const dataSheets = await getDataSheetsAsync();
+    return res.status(200).json({ status: 'ok', data: dataSheets });
+  } catch (ex: any) {
+    return res.status(500).json({ status: 'error', data: ex.message });
+  }
+});
+
+router.post('/', async (req, res) => {
+  if (req.headers.authorization && isAuthenticated(req.headers.authorization)) {
+    try {
+      const dataSheet = await createDataSheetAsync(req.body as buildr.DataSheet);
+      return res.status(200).json({ status: 'ok', data: dataSheet });
+    } catch (ex: any) {
+      return res.status(500).json({ status: 'error', data: ex.message });
+    }
+  } else {
+    return res.status(401).send();
+  }
+});
 
 router.get('/:id', async (req, res) => {
   try {
