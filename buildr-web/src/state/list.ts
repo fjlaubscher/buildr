@@ -14,7 +14,6 @@ export const ListAtom = atom<buildr.List>({
     factionId: 0,
     subFactionId: 0,
     units: [],
-    points: 0,
-    gameSizeId: 0
+    points: 0
   }
 });

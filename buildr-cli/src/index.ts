@@ -17,7 +17,7 @@ const initCLI = async () => {
       maximumModels: 0,
       points: 0,
       battlefieldRoleId: BattlefieldRoleTypes.HQ,
-      subFactionId: 0,
+      subFactionIds: [],
       description: ''
     });
 

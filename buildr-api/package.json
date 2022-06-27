@@ -8,11 +8,6 @@
     "prestart": "tsc",
     "start": "node ./build/index.js"
   },
-  "keywords": [
-    "warhammer 40000",
-    "warhammer 40k",
-    "40k"
-  ],
   "author": "Francois Laubscher",
   "license": "MIT",
   "dependencies": {
