@@ -25,7 +25,12 @@ const DrawerForm = ({ formId, title, children, isOpen, isSubmitting, isValid, on
   const [isSmallDesktop] = useMediaQuery('(min-width: 1024px)');
 
   return (
-    <Drawer isOpen={isOpen} placement={isSmallDesktop ? 'right' : 'bottom'} size={isSmallDesktop ? 'md' : undefined} onClose={onClose}>
+    <Drawer
+      isOpen={isOpen}
+      placement={isSmallDesktop ? 'right' : 'bottom'}
+      size={isSmallDesktop ? 'md' : undefined}
+      onClose={onClose}
+    >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
