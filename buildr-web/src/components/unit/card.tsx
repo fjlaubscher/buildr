@@ -20,6 +20,9 @@ import {
 } from '@chakra-ui/react';
 import { MdMoreHoriz, MdCopyAll, MdDelete, MdEdit } from 'react-icons/md';
 
+// helpers
+import { groupUnitUpgrades } from '../../helpers/list';
+
 interface Props {
   unit: buildr.List.Unit;
   onEditClick: () => void;
@@ -29,6 +32,7 @@ interface Props {
 
 const UnitCard = ({ unit, onEditClick, onDuplicateClick, onDeleteClick }: Props) => {
   const background = useColorModeValue('white', 'gray.800');
+  const groupedUpgrades = groupUnitUpgrades(unit.upgrades);
 
   return (
     <Box position="relative" background={background} borderRadius={4} width="100%" p={4}>
@@ -89,15 +93,21 @@ const UnitCard = ({ unit, onEditClick, onDuplicateClick, onDeleteClick }: Props)
           {unit.models > 1 ? `${unit.models} x ` : ''}
           {unit.datasheet.description} ({unit.points})
         </Text>
-        {unit.upgrades && unit.upgrades.length && (
+        {groupedUpgrades && (
           <Wrap width="100%">
-            {unit.upgrades.map((up, i) => (
-              <WrapItem key={`${unit.key}-upgrade-${i}`}>
-                <Tag size="sm" colorScheme="green">
-                  {up.description}
-                </Tag>
-              </WrapItem>
-            ))}
+            {Object.keys(groupedUpgrades).map((key, i) => {
+              const upgradesById = groupedUpgrades[parseInt(key)];
+              const firstUpgrade = upgradesById[0];
+
+              return (
+                <WrapItem key={`${unit.key}-upgrade-${i}`}>
+                  <Tag size="sm" colorScheme="green">
+                    {upgradesById.length > 1 ? `${upgradesById.length} x ` : ''}
+                    {firstUpgrade.description}
+                  </Tag>
+                </WrapItem>
+              );
+            })}
           </Wrap>
         )}
       </VStack>

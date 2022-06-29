@@ -1,7 +1,31 @@
-const exportUnitUpgradesToChat = (upgrades: buildr.DataSheetUpgrade[]) =>
-  upgrades.length > 0
-    ? `\n${upgrades.map((up) => `- ${up.description} (${up.points})`).join('\n')}`
-    : '';
+export const groupUnitUpgrades = (upgrades: buildr.DataSheetUpgrade[]) => {
+  return upgrades.reduce(
+    (acc, current) => ({
+      ...acc,
+      [current.id]: acc[current.id] ? [...acc[current.id], current] : [current]
+    }),
+    {} as { [key: number]: buildr.DataSheetUpgrade[] }
+  );
+};
+
+const exportUnitUpgradesToChat = (upgrades: buildr.DataSheetUpgrade[]) => {
+  if (upgrades.length > 0) {
+    const groupedUpgrades = groupUnitUpgrades(upgrades);
+
+    return Object.keys(groupedUpgrades)
+      .map((key) => {
+        const upgradesById = groupedUpgrades[parseInt(key)];
+        const firstUpgrade = upgradesById[0];
+
+        return `\n- ${upgradesById.length > 1 ? `${upgradesById.length} x ` : ''}${
+          firstUpgrade.description
+        }${firstUpgrade.points ? ` (${firstUpgrade.points * upgradesById.length})` : ''}`;
+      })
+      .join('');
+  }
+
+  return '';
+};
 
 const exportUnitToChat = (unit: buildr.List.Unit) =>
   `*${unit.models > 1 ? `${unit.models} x ` : ''}${unit.datasheet.description}* (${
